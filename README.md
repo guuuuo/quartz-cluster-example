@@ -1,1 +1,2 @@
-QuartzCluster by Niko http://string.cc
+QuartzCluster
+http://string.cc
