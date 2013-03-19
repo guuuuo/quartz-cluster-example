@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+
+	<bean id="helloWorld" class="com.telek.quartz.HelloWorld"></bean>
+	<!-- 实例化一个具体任务 -->
+	<bean id="helloWorldJobDetail"
+		class="com.telek.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean ">
+		<property name="targetObject" ref="helloWorld" />
+		<property name="targetMethod" value="sayHello" />
+	</bean>
+	<!-- 为这个任务添加触发器 -->
+	<bean id="helloWorldTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="helloWorldJobDetail" />
+		<property name="cronExpression" value="0/6 * * * * ?" />
+	</bean>
+	<!-- 将具体任务和触发器部署到调度器scheduler上 -->
+	<bean name="quartzScheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+		<property name="triggers">
+			<list>
+				<!-- 此处可添加多个触发器 -->
+				<ref bean="helloWorldTrigger" />
+			</list>
+		</property>
+	</bean>
+
+</beans>
